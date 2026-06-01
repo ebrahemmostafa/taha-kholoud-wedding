@@ -308,74 +308,6 @@
     .empty-icon { font-size: 3rem; margin-bottom: 12px; }
     .empty p { font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--gold); }
 
-    /* ── Add response (demo) ── */
-    .add-section {
-      margin-top: 52px;
-      background: var(--paper);
-      border: 1.5px dashed rgba(201,146,74,.4);
-      border-radius: var(--radius);
-      padding: 32px 36px 36px;
-      box-shadow: 0 3px 16px var(--shadow);
-    }
-
-    .add-title {
-      font-family: 'Caveat', cursive;
-      font-size: 1.5rem;
-      color: var(--warm);
-      margin-bottom: 22px;
-      text-align: center;
-    }
-
-    .form-row { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
-    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
-
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label {
-      font-size: .88rem;
-      font-style: italic;
-      color: var(--warm);
-      letter-spacing: .03em;
-    }
-    .field input,
-    .field textarea,
-    .field select {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      border: 1px solid rgba(201,146,74,.35);
-      border-radius: 10px;
-      padding: 10px 14px;
-      background: var(--cream);
-      color: var(--ink);
-      transition: border-color .2s;
-      outline: none;
-      resize: none;
-    }
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,146,74,.12); }
-
-    .field-full { grid-column: 1 / -1; }
-
-    .submit-btn {
-      font-family: 'Caveat', cursive;
-      font-size: 1.2rem;
-      background: linear-gradient(135deg, var(--gold), var(--warm));
-      color: var(--paper);
-      border: none;
-      border-radius: 100px;
-      padding: 12px 40px;
-      cursor: pointer;
-      display: block;
-      margin: 24px auto 0;
-      box-shadow: 0 4px 16px rgba(201,146,74,.4);
-      transition: transform .15s, box-shadow .15s;
-    }
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(201,146,74,.45);
-    }
-    .submit-btn:active { transform: translateY(0); }
-
     /* ── Toast ── */
     .toast {
       position: fixed;
@@ -421,6 +353,27 @@
       transform: translateY(-50%);
       color: var(--gold);
       pointer-events: none;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,146,74,.25);
+      background: transparent;
+      color: rgba(139,99,64,.4);
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .18s, color .18s, border-color .18s;
+      flex-shrink: 0;
+    }
+    .delete-btn:hover {
+      background: rgba(212,100,100,.12);
+      color: #a04040;
+      border-color: rgba(212,100,100,.35);
     }
 
     /* ── Responsive ── */
@@ -496,28 +449,6 @@
     <p>No responses yet — be the first to send your love!</p>
   </div>
 
-  <!-- ── Add Response Form ── -->
-  <div class="add-section">
-    <p class="add-title">Add a Response</p>
-    <div class="form-row">
-      <div class="field">
-        <label for="f-name">Guest Name</label>
-        <input type="text" id="f-name" placeholder="e.g. Sara Ahmed" required />
-      </div>
-      <div class="field">
-        <label for="f-attend">Attending?</label>
-        <select id="f-attend">
-          <option value="yes">Yes, with joy 🥂</option>
-          <option value="no">Sadly, no 🕊️</option>
-        </select>
-      </div>
-      <div class="field field-full">
-        <label for="f-note">A note for the couple (optional)</label>
-        <textarea id="f-note" rows="3" placeholder="Congratulations! We can't wait…"></textarea>
-      </div>
-    </div>
-    <button class="submit-btn" id="add-btn">Send with love 💛</button>
-  </div>
 
 </div>
 
@@ -586,7 +517,8 @@
         </div>
         <span class="resp-badge ${r.attend === 'yes' ? 'badge-yes' : 'badge-no'}">
           ${r.attend === 'yes' ? '✓ Attending' : '♡ Sending love'}
-        </span>`;
+        </span>
+        <button class="delete-btn" data-id="${r.id}" aria-label="Delete response" title="Delete">×</button>`;
       grid.appendChild(card);
     });
 
@@ -632,28 +564,15 @@
     render();
   });
 
-  /* ── Add Response ── */
-  $('add-btn').addEventListener('click', () => {
-    const name = $('f-name').value.trim();
-    if (!name) { showToast('Please enter a guest name 💌'); return; }
-    const entry = {
-      id: Date.now(),
-      name,
-      attend: $('f-attend').value,
-      note: $('f-note').value.trim(),
-      ts: Date.now()
-    };
-    responses.unshift(entry);
+  /* ── Delete Response ── */
+  document.getElementById('cards-grid').addEventListener('click', (e) => {
+    const btn = e.target.closest('.delete-btn');
+    if (!btn) return;
+    const id = Number(btn.dataset.id);
+    responses = responses.filter(r => r.id !== id);
     save(responses);
-    $('f-name').value = '';
-    $('f-note').value = '';
-    $('f-attend').selectedIndex = 0;
-    activeFilter = 'all';
-    sortMode = 'newest';
-    $('sort-select').value = 'newest';
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
     render();
-    showToast('Response added — thank you! 💛');
+    showToast('Response removed 🗑️');
   });
 
   /* ── Init ── */
