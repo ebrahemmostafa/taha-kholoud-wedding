@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taha &amp; Kholoud — Guest Responses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Shrikhand&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --cream:   #faf6f0;
+      --warm:    #8b6340;
+      --gold:    #c9924a;
+      --ink:     #3d2b1f;
+      --blush:   #f2e4d6;
+      --paper:   #fff9f3;
+      --shadow:  rgba(139,99,64,.13);
+      --radius:  18px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Decorative background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 80% 10%,  rgba(201,146,74,.10) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 10% 90%,  rgba(201,146,74,.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Grain texture ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: .5;
+    }
+
+    /* ── Layout ── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 64px 0 40px;
+    }
+
+    .header-ornament {
+      font-size: 13px;
+      letter-spacing: .22em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    header h1 {
+      font-family: 'Shrikhand', serif;
+      font-size: clamp(2.4rem, 7vw, 4rem);
+      color: var(--warm);
+      line-height: 1.05;
+      letter-spacing: .01em;
+    }
+
+    .header-sub {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-top: 6px;
+    }
+
+    .header-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px auto 0;
+      max-width: 320px;
+    }
+    .header-divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .header-divider .dot { color: var(--gold); font-size: 1.1rem; }
+
+    /* ── Stats bar ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 32px 0 44px;
+    }
+
+    .stat-card {
+      background: var(--paper);
+      border: 1px solid rgba(201,146,74,.22);
+      border-radius: var(--radius);
+      padding: 22px 16px 18px;
+      text-align: center;
+      box-shadow: 0 4px 20px var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.6) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .stat-num {
+      font-family: 'Shrikhand', serif;
+      font-size: 2.6rem;
+      color: var(--warm);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+    .stat-emoji { font-size: 1.3rem; margin-bottom: 4px; }
+
+    /* ── Filter tabs ── */
+    .filter-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-family: 'Caveat', cursive;
+      font-size: 1.05rem;
+      padding: 8px 22px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gold);
+      background: transparent;
+      color: var(--warm);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--gold);
+      color: var(--paper);
+    }
+
+    /* ── Sort row ── */
+    .sort-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      font-size: .92rem;
+      color: var(--warm);
+      font-style: italic;
+    }
+    .sort-row select {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .92rem;
+      font-style: italic;
+      border: 1px solid rgba(201,146,74,.35);
+      border-radius: 8px;
+      padding: 4px 10px;
+      background: var(--paper);
+      color: var(--ink);
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9924a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+
+    /* ── Response cards ── */
+    .cards-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .resp-card {
+      background: var(--paper);
+      border: 1px solid rgba(201,146,74,.2);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      box-shadow: 0 3px 16px var(--shadow);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: start;
+      animation: cardIn .45s ease both;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .resp-card:hover {
+      box-shadow: 0 8px 32px rgba(139,99,64,.18);
+      transform: translateY(-1px);
+    }
+
+    .resp-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), #e8b87a);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .resp-card:hover::after { opacity: 1; }
+
+    .resp-card.attending::after { opacity: .6; background: linear-gradient(90deg, #a8c68f, #c9da99); }
+    .resp-card.not-attending::after { opacity: .6; background: linear-gradient(90deg, #d4a5a5, #e8b8b8); }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .resp-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Shrikhand', serif;
+      font-size: 1.3rem;
+      color: var(--paper);
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--gold), var(--warm));
+      box-shadow: 0 3px 10px var(--shadow);
+    }
+
+    .resp-name {
+      font-family: 'Caveat', cursive;
+      font-size: 1.35rem;
+      color: var(--warm);
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .resp-time {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: .85rem;
+      color: rgba(61,43,31,.45);
+      margin-top: 2px;
+    }
+    .resp-note {
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--ink);
+      margin-top: 10px;
+      font-style: italic;
+      border-left: 2px solid rgba(201,146,74,.35);
+      padding-left: 12px;
+    }
+
+    .resp-badge {
+      font-family: 'Caveat', cursive;
+      font-size: .92rem;
+      padding: 4px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-yes {
+      background: rgba(168,198,143,.22);
+      color: #5a7a47;
+      border: 1px solid rgba(168,198,143,.5);
+    }
+    .badge-no {
+      background: rgba(212,165,165,.2);
+      color: #8b4a4a;
+      border: 1px solid rgba(212,165,165,.45);
+    }
+
+    /* ── Empty state ── */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--warm);
+    }
+    .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+    .empty p { font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--gold); }
+
+    /* ── Add response (demo) ── */
+    .add-section {
+      margin-top: 52px;
+      background: var(--paper);
+      border: 1.5px dashed rgba(201,146,74,.4);
+      border-radius: var(--radius);
+      padding: 32px 36px 36px;
+      box-shadow: 0 3px 16px var(--shadow);
+    }
+
+    .add-title {
+      font-family: 'Caveat', cursive;
+      font-size: 1.5rem;
+      color: var(--warm);
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    .form-row { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-size: .88rem;
+      font-style: italic;
+      color: var(--warm);
+      letter-spacing: .03em;
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      border: 1px solid rgba(201,146,74,.35);
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: var(--cream);
+      color: var(--ink);
+      transition: border-color .2s;
+      outline: none;
+      resize: none;
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,146,74,.12); }
+
+    .field-full { grid-column: 1 / -1; }
+
+    .submit-btn {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, var(--gold), var(--warm));
+      color: var(--paper);
+      border: none;
+      border-radius: 100px;
+      padding: 12px 40px;
+      cursor: pointer;
+      display: block;
+      margin: 24px auto 0;
+      box-shadow: 0 4px 16px rgba(201,146,74,.4);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,146,74,.45);
+    }
+    .submit-btn:active { transform: translateY(0); }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--warm);
+      color: var(--cream);
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      padding: 12px 28px;
+      border-radius: 100px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s, transform .3s;
+      z-index: 99;
+      white-space: nowrap;
+      box-shadow: 0 6px 24px rgba(139,99,64,.35);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── Search ── */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 18px;
+    }
+    .search-wrap input {
+      width: 100%;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      border: 1px solid rgba(201,146,74,.35);
+      border-radius: 100px;
+      padding: 11px 20px 11px 44px;
+      background: var(--paper);
+      color: var(--ink);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-wrap input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,146,74,.12); }
+    .search-icon {
+      position: absolute;
+      left: 16px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      pointer-events: none;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .stat-num { font-size: 2rem; }
+      .resp-card { grid-template-columns: auto 1fr; }
+      .resp-badge { grid-column: 2; margin-top: -6px; }
+      header h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="header-ornament">✦ responses dashboard ✦</div>
+    <h1>RSVP BOARD</h1>
+    <p class="header-sub">Taha &amp; Kholoud · June 12, 2026</p>
+    <div class="header-divider">
+      <span></span><div class="dot">❦</div><span></span>
+    </div>
+  </header>
+
+  <!-- ── Stats ── -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-emoji">💌</div>
+      <div class="stat-num" id="total-count">0</div>
+      <div class="stat-label">Total Responses</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-emoji">🥂</div>
+      <div class="stat-num" id="yes-count">0</div>
+      <div class="stat-label">Attending</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-emoji">🕊️</div>
+      <div class="stat-num" id="no-count">0</div>
+      <div class="stat-label">Sending Love</div>
+    </div>
+  </div>
+
+  <!-- ── Search & Filter ── -->
+  <div class="search-wrap">
+    <svg class="search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search-input" placeholder="Search by name or message…" />
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all">All Guests</button>
+    <button class="filter-btn" data-filter="yes">✓ Attending</button>
+    <button class="filter-btn" data-filter="no">♡ Sending Love</button>
+  </div>
+
+  <div class="sort-row">
+    <span>Sort by</span>
+    <select id="sort-select">
+      <option value="newest">Newest first</option>
+      <option value="oldest">Oldest first</option>
+      <option value="name">Name A–Z</option>
+    </select>
+  </div>
+
+  <!-- ── Cards ── -->
+  <div class="cards-grid" id="cards-grid"></div>
+
+  <!-- ── Empty state ── -->
+  <div class="empty" id="empty-state" style="display:none">
+    <div class="empty-icon">💌</div>
+    <p>No responses yet — be the first to send your love!</p>
+  </div>
+
+  <!-- ── Add Response Form ── -->
+  <div class="add-section">
+    <p class="add-title">Add a Response</p>
+    <div class="form-row">
+      <div class="field">
+        <label for="f-name">Guest Name</label>
+        <input type="text" id="f-name" placeholder="e.g. Sara Ahmed" required />
+      </div>
+      <div class="field">
+        <label for="f-attend">Attending?</label>
+        <select id="f-attend">
+          <option value="yes">Yes, with joy 🥂</option>
+          <option value="no">Sadly, no 🕊️</option>
+        </select>
+      </div>
+      <div class="field field-full">
+        <label for="f-note">A note for the couple (optional)</label>
+        <textarea id="f-note" rows="3" placeholder="Congratulations! We can't wait…"></textarea>
+      </div>
+    </div>
+    <button class="submit-btn" id="add-btn">Send with love 💛</button>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ── Data store ── */
+  const STORAGE_KEY = 'wedding_rsvp_responses_v1';
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  }
+  function save(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+  }
+
+  let responses = load();
+  let activeFilter = 'all';
+  let searchQ = '';
+  let sortMode = 'newest';
+
+  /* ── Utils ── */
+  const $ = (id) => document.getElementById(id);
+  const initials = (name) => name.trim().split(/\s+/).slice(0,2).map(w => w[0].toUpperCase()).join('');
+  const fmtDate  = (ts) => new Date(ts).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+
+  /* ── Render ── */
+  function render() {
+    let list = [...responses];
+
+    // Filter
+    if (activeFilter !== 'all') list = list.filter(r => r.attend === activeFilter);
+
+    // Search
+    if (searchQ.trim()) {
+      const q = searchQ.toLowerCase();
+      list = list.filter(r => r.name.toLowerCase().includes(q) || r.note.toLowerCase().includes(q));
+    }
+
+    // Sort
+    if (sortMode === 'newest') list.sort((a,b) => b.ts - a.ts);
+    else if (sortMode === 'oldest') list.sort((a,b) => a.ts - b.ts);
+    else list.sort((a,b) => a.name.localeCompare(b.name));
+
+    const grid  = $('cards-grid');
+    const empty = $('empty-state');
+    grid.innerHTML = '';
+
+    if (!list.length) { empty.style.display = ''; return; }
+    empty.style.display = 'none';
+
+    list.forEach((r, i) => {
+      const card = document.createElement('div');
+      card.className = `resp-card ${r.attend === 'yes' ? 'attending' : 'not-attending'}`;
+      card.style.animationDelay = (i * 0.06) + 's';
+      card.innerHTML = `
+        <div class="resp-avatar">${initials(r.name)}</div>
+        <div>
+          <div class="resp-name">${esc(r.name)}</div>
+          <div class="resp-time">${fmtDate(r.ts)}</div>
+          ${r.note ? `<p class="resp-note">${esc(r.note)}</p>` : ''}
+        </div>
+        <span class="resp-badge ${r.attend === 'yes' ? 'badge-yes' : 'badge-no'}">
+          ${r.attend === 'yes' ? '✓ Attending' : '♡ Sending love'}
+        </span>`;
+      grid.appendChild(card);
+    });
+
+    // Stats (always from all responses)
+    const yesN = responses.filter(r => r.attend === 'yes').length;
+    const noN  = responses.filter(r => r.attend === 'no').length;
+    $('total-count').textContent = responses.length;
+    $('yes-count').textContent = yesN;
+    $('no-count').textContent = noN;
+  }
+
+  function esc(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  /* ── Filters ── */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      render();
+    });
+  });
+
+  /* ── Search ── */
+  $('search-input').addEventListener('input', e => {
+    searchQ = e.target.value;
+    render();
+  });
+
+  /* ── Sort ── */
+  $('sort-select').addEventListener('change', e => {
+    sortMode = e.target.value;
+    render();
+  });
+
+  /* ── Add Response ── */
+  $('add-btn').addEventListener('click', () => {
+    const name = $('f-name').value.trim();
+    if (!name) { showToast('Please enter a guest name 💌'); return; }
+    const entry = {
+      id: Date.now(),
+      name,
+      attend: $('f-attend').value,
+      note: $('f-note').value.trim(),
+      ts: Date.now()
+    };
+    responses.unshift(entry);
+    save(responses);
+    $('f-name').value = '';
+    $('f-note').value = '';
+    $('f-attend').selectedIndex = 0;
+    activeFilter = 'all';
+    sortMode = 'newest';
+    $('sort-select').value = 'newest';
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+    render();
+    showToast('Response added — thank you! 💛');
+  });
+
+  /* ── Init ── */
+  render();
+</script>
+</body>
+</html>

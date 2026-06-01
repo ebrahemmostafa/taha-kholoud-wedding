@@ -111,6 +111,24 @@
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    // --- Save response to localStorage so responces.html can read it ---
+    const STORAGE_KEY = 'wedding_rsvp_responses_v1';
+    const data = new FormData(form);
+    const entry = {
+      id:     Date.now(),
+      name:   data.get('name')    || '',
+      attend: data.get('attend')  || 'yes',
+      note:   data.get('message') || '',
+      ts:     Date.now()
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      existing.unshift(entry);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+    } catch (_) {}
+    // -------------------------------------------------------------------
+
     showToast("Thank you! We can't wait to celebrate with you 💛");
     form.reset();
     hideModal();
